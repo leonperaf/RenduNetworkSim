@@ -18,7 +18,7 @@ bool Network::add_link(const size_t& a, const size_t& b)
 {
 	// a can't link with himself
 	// if values.size = 100 , node goes [0,99]
-	if(( a == b) or ( a >= values.size()) or (b >= values.size())
+	if(( a == b) or ( a >= this->size()) or (b >= this->size())
 				 or ( a < 0) or (b < 0))
 	return false;
 		
@@ -52,7 +52,7 @@ size_t Network::random_connect(const double& mean_deg)
 		if(degree(i) > 0)links.erase(i);	
 	}
 	
-	for (size_t i(0); i < values.size() ; ++i){
+	for (size_t i(0); i < this->size() ; ++i){
 		
 		size_t nodes = RNG.poisson(mean_deg);
 		
@@ -70,10 +70,18 @@ size_t Network::set_values(const std::vector<double>& vect)
 {
 	size_t numv (0);
 	
-	for(size_t i(0) ; i < vect.size() ; ++i){
+	if(this->size() >= vect.size()){
+		for(size_t i(0) ; i < vect.size() ; ++i){
 		
-		values[i] = vect[i];
-		++numv;
+			values[i] = vect[i];
+			++numv;
+		}
+	}else{
+		for(size_t j(0); j < this->size() ; ++j){
+			
+			values[j] = vect[j];
+			++numv;
+		}
 	}
 	
 	return numv;
